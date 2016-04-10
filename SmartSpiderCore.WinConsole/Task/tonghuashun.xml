@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpiderEngine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Title>抓取同花顺实时行情</Title>
+  <Description>抓取实时行情。</Description>
+
+  <!--起始地址-->
+  <InputList>
+    <Input xsi:type="HttpInput">
+      <Encoding>utf-8</Encoding>
+      <ContentType>text/html; charset=utf-8</ContentType>
+      <Host>stockpage.10jqka.com.cn</Host>
+      <Method>GET</Method>
+      <Sleep>0</Sleep>
+      <CookieClean>32767</CookieClean>
+      <Referer>http://stockpage.10jqka.com.cn/HK0700/warrant/</Referer>
+      <Accept>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</Accept>
+      <UserAgent>Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36</UserAgent>
+      <Headers>
+        <NameValue>
+          <Name>Accept-Language</Name>
+          <Value>zh-CN,zh;q=0.8,en;q=0.6</Value>
+        </NameValue>
+        <NameValue>
+          <Name>Cache-Control</Name>
+          <Value>max-age=0</Value>
+        </NameValue>
+      </Headers>
+      <UrlEnumerator>
+        <EnumeratorRuleList>
+          <EnumeratorRule xsi:type="LineEnumeratorRule">
+            <Url>
+              <string>http://stockpage.10jqka.com.cn/HK0700/warrant</string>
+            </Url>
+          </EnumeratorRule>
+        </EnumeratorRuleList>
+      </UrlEnumerator>
+    </Input>
+  </InputList>
+
+  <!--抓取规则-->
+  <FieldList>
+
+    <Field>
+      <Title>采集时间</Title>
+      <DataName>CreateTime</DataName>
+      <Rule>
+        <Rule xsi:type="DateRule">
+          <Format>yyyy-MM-dd HH:mm:ss</Format>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <!--复合字段-->
+    <Field  xsi:type="ComplexField">
+      <Title>窝轮</Title>
+      <DataName>WoLun</DataName>
+      <SplitText>&lt;/tr&gt;</SplitText>
+
+      <!--主规则-->
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&lt;h2&gt;窝轮&lt;/h2&gt;</Begin>
+          <End>&lt;h2&gt;牛熊证&lt;/h2&gt;</End>
+        </Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&lt;tbody&gt;</Begin>
+          <End>&lt;/tbody&gt;</End>
+        </Rule>
+      </Rule>
+
+      <!--子字段-->
+      <SubField>
+
+        <Field>
+          <Title>股票代码</Title>
+          <DataName>Code</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringRule">
+              <Begin>&lt;td class="tc"&gt;</Begin>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>股票名称</Title>
+          <DataName>CodeName</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>1</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>类别</Title>
+          <DataName>Type</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>2</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>结算方式</Title>
+          <DataName>JieSuan</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>3</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>行使价</Title>
+          <DataName>XingShi</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>4</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>行权期起始</Title>
+          <DataName>XingQuan</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>5</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>行权期截止</Title>
+          <DataName>LastTransDate</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>6</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>最后交易日</Title>
+          <DataName>EndDate</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>7</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+        <Field>
+          <Title>最后交易日</Title>
+          <DataName>EndDate</DataName>
+          <Rule>
+            <Rule xsi:type="SubStringIndexRule">
+              <RegexValue>tc\"\&gt;</RegexValue>
+              <Index>8</Index>
+              <End>&lt;/td&gt;</End>
+            </Rule>
+          </Rule>
+        </Field>
+
+      </SubField>
+
+    </Field>
+
+  </FieldList>
+
+  <!--发布规则-->
+  <OutputList>
+    <Output xsi:type="CsvOutput">
+      <Path>tonghuashun_hq.csv</Path>
+    </Output>
+  </OutputList>
+
+</SpiderEngine>

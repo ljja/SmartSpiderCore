@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F145CBF7-7148-436B-9B04-F7B4CA4634E4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartSpiderCore</RootNamespace>
+    <AssemblyName>SmartSpiderCore</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Apache.NMS">
+      <HintPath>..\packages\Apache.NMS.1.7.1\lib\net40\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ">
+      <HintPath>..\packages\Apache.NMS.ActiveMQ.1.7.1\lib\net40\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExtractRule\Base64Rule.cs" />
+    <Compile Include="ExtractField\ComplexField.cs" />
+    <Compile Include="Content.cs" />
+    <Compile Include="EnumeratorRule.cs" />
+    <Compile Include="ExtractRule\FixedValueRule.cs" />
+    <Compile Include="ExtractRule\GuidRule.cs" />
+    <Compile Include="ExtractRule\InnerTextRule.cs" />
+    <Compile Include="ExtractRule\RegexToList.cs" />
+    <Compile Include="ExtractRule\SplitRule.cs" />
+    <Compile Include="In\ActiveMQEnumerator.cs" />
+    <Compile Include="In\ActiveMQInput.cs" />
+    <Compile Include="In\ActiveMQMessage\HtmlMessageContext.cs" />
+    <Compile Include="In\ActiveMQMessage\MessageContext.cs" />
+    <Compile Include="In\ActiveMQMessage\NameValue.cs" />
+    <Compile Include="In\ActiveMQMessage\Request.cs" />
+    <Compile Include="In\ActiveMQMessage\Response.cs" />
+    <Compile Include="In\FileInput.cs" />
+    <Compile Include="In\ForEnumeratorRule.cs" />
+    <Compile Include="In\HttpInput.cs" />
+    <Compile Include="In\FileLineEnumeratorRule.cs" />
+    <Compile Include="In\UrlEnumerator.cs" />
+    <Compile Include="In\LineEnumeratorRule.cs" />
+    <Compile Include="NameValue.cs" />
+    <Compile Include="NavigationRule.cs" />
+    <Compile Include="Out\CsvOutput.cs" />
+    <Compile Include="ExtractRule\DateRule.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="FieldResult.cs" />
+    <Compile Include="Input.cs" />
+    <Compile Include="Output.cs" />
+    <Compile Include="Out\DbOutput.cs" />
+    <Compile Include="Out\SOHOutput.cs" />
+    <Compile Include="Out\SqlServerOutput.cs" />
+    <Compile Include="NavigationRule\RegexNavigationRule.cs" />
+    <Compile Include="Rule.cs" />
+    <Compile Include="In\LocalDirectoryInput.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ExtractRule\RegexRule.cs" />
+    <Compile Include="ExtractRule\ReplaceRule.cs" />
+    <Compile Include="ConfigManage.cs" />
+    <Compile Include="ExtractRule\SessionRule.cs" />
+    <Compile Include="SpiderEngine.cs" />
+    <Compile Include="ExtractRule\SubStringIndexRule.cs" />
+    <Compile Include="ExtractRule\SubStringRule.cs" />
+    <Compile Include="ExtractRule\TrimRule.cs" />
+    <Compile Include="ExtractRule\XPathRule.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpiderEngine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Title>用户行为日志解析</Title>
+  <Description>简单拆分13列日志行</Description>
+
+  <!--起始地址-->
+  <InputList>
+    
+    <Input xsi:type="FileInput">
+      <Path>C:\log\ta-2015030103.log</Path>
+      <Encoding>utf-8</Encoding>
+    </Input>
+    
+  </InputList>
+
+  <!--提取规则-->
+  <FieldList>
+
+    <Field>
+      <Title>timestamp</Title>
+      <DataName>timestamp</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>0</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>userip</Title>
+      <DataName>userip</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>1</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>domain</Title>
+      <DataName>domain</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>2</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>url</Title>
+      <DataName>url</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>3</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>referrer</Title>
+      <DataName>referrer</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>4</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>sh</Title>
+      <DataName>sh</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>5</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>sw</Title>
+      <DataName>sw</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>6</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>bitdepth</Title>
+      <DataName>bitdepth</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>7</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>lang</Title>
+      <DataName>lang</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>8</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>useragent</Title>
+      <DataName>useragent</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>9</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>tracecode</Title>
+      <DataName>tracecode</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>10</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>account</Title>
+      <DataName>account</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>11</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>event</Title>
+      <DataName>event</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>12</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>exts</Title>
+      <DataName>exts</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>13</ValueIndex>
+        </Rule>
+      </Rule>
+    </Field>
+
+
+    <Field>
+      <Title>游客账号</Title>
+      <DataName>username</DataName>
+      <Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>1</SplitChar>
+          <ValueIndex>13</ValueIndex>
+        </Rule>
+        <Rule xsi:type="SplitRule">
+          <SplitChar>124</SplitChar>
+          <ValueIndex>3</ValueIndex>
+        </Rule>
+        <Rule xsi:type="RegexRule">
+          <RegexValue>-[0-9]+</RegexValue>
+        </Rule>
+      </Rule>
+      
+      
+      
+      
+    </Field>
+
+  </FieldList>
+
+  <!--发布规则-->
+  <OutputList>
+    
+    <Output xsi:type="CsvOutput">
+      <Path>ta-log.csv</Path>
+    </Output>
+
+    <!--
+    <Output xsi:type="SqlServerOutput">
+      <ConnectionString>server=127.0.0.1; User Id=sa; password=000000; Persist Security Info=True; database=TALOG; MultipleActiveResultSets=true;</ConnectionString>
+      <InsertFormat>INSERT INTO TA (timestamp, userip, domain) VALUES (@timestamp, @userip, @domain)</InsertFormat>
+    </Output>
+    -->
+    
+  </OutputList>
+
+</SpiderEngine>

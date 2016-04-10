@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SpiderEngine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Title>其他.特别行政区.北京市.bj.qu114.com.保洁</Title>
+  <Description>其他.特别行政区.北京市.bj.qu114.com.保洁</Description>
+
+  <TableXPath></TableXPath>
+  <IsSplitTable>false</IsSplitTable>
+
+  <InputList>
+    <Input xsi:type="HttpInput">
+      <Encoding>utf-8</Encoding>
+      <ContentType>text/html; charset=utf-8</ContentType>
+      <Host>bj.qu114.com</Host>
+      <Method>GET</Method>
+      <Sleep>0</Sleep>
+      <CookieClean>30</CookieClean>
+      <Referer>http://bj.qu114.com/baojie/40142869.html</Referer>
+      <Accept>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</Accept>
+      <UserAgent>Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36</UserAgent>
+      <Headers>
+        <NameValue>
+          <Name>Accept-Language</Name>
+          <Value>zh-CN,zh;q=0.8,en;q=0.6</Value>
+        </NameValue>
+        <NameValue>
+          <Name>Cache-Control</Name>
+          <Value>max-age=0</Value>
+        </NameValue>
+      </Headers>
+      <UrlEnumerator>
+        <UrlFormat>http://bj.qu114.com/baojie/pn{MEMBER}/</UrlFormat>
+        <EnumeratorRuleList>
+          <EnumeratorRule xsi:type="ForEnumeratorRule">
+            <Feature>{MEMBER}</Feature>
+            <Start>1</Start>
+            <End>1405</End>
+            <Step>1</Step>
+            <Direction>true</Direction>
+          </EnumeratorRule>
+        </EnumeratorRuleList>
+      </UrlEnumerator>
+    </Input>
+  </InputList>
+
+  <!--导航规则-->
+  <NavigationRule  xsi:type="RegexNavigationRule">
+    <Begin>id="Table_List_Image"</Begin>
+    <End>马上发布一条北京保洁清洗信息</End>
+    <RegexValue>http://bj.qu114.com/baojie/[0-9]+.html</RegexValue>
+  </NavigationRule>
+
+  <FieldList>
+
+    <Field>
+      <Title>区域</Title>
+      <DataName>区域</DataName>
+      <Require>true</Require>
+      <Sort>0</Sort>
+      <Rule>
+        <Rule xsi:type="FixedValueRule" >
+          <Text>其他</Text>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>省份</Title>
+      <DataName>省份</DataName>
+      <Require>true</Require>
+      <Sort>5</Sort>
+      <Rule>
+        <Rule xsi:type="FixedValueRule" >
+          <Text>特别行政区</Text>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>城市</Title>
+      <DataName>城市</DataName>
+      <Require>true</Require>
+      <Sort>10</Sort>
+      <Rule>
+        <Rule xsi:type="FixedValueRule" >
+          <Text>北京市</Text>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>网页地址</Title>
+      <DataName>网页地址</DataName>
+      <Require>false</Require>
+      <Index>0</Index>
+      <Sort>30</Sort>
+      <Rule>
+        <Rule xsi:type="SessionRule">
+          <Key>Request.Url</Key>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>联系电话</Title>
+      <DataName>联系电话</DataName>
+      <Require>false</Require>
+      <Index>0</Index>
+      <Sort>39</Sort>
+      <Rule>
+
+        <Rule xsi:type="SubStringRule">
+          <Begin>TablePro</Begin>
+          <End>&lt;/table&gt;</End>
+        </Rule>
+
+        <Rule xsi:type="SubStringRule">
+          <Begin>联系电话</Begin>
+          <End>&lt;/td&gt;</End>
+        </Rule>
+
+        <Rule xsi:type="RegexRule">
+          <RegexValue>[0-9-]+</RegexValue>
+        </Rule>
+
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>文章标题</Title>
+      <DataName>文章标题</DataName>
+      <Require>false</Require>
+      <Index>0</Index>
+      <Sort>40</Sort>
+      <Rule>
+
+        <Rule xsi:type="SubStringRule">
+          <Begin>&lt;h1&gt;</Begin>
+          <End>&lt;/h1&gt;</End>
+        </Rule>
+
+        <Rule xsi:type="ReplaceRule">
+          <Origin>,</Origin>
+          <Target>，</Target>
+        </Rule>
+
+        <Rule xsi:type="TrimRule" />
+
+      </Rule>
+    </Field>
+
+  </FieldList>
+
+  <OutputList>
+    <Output xsi:type="CsvOutput">
+      <Path>data/其他.特别行政区.北京市.bj.qu114.com.保洁.csv</Path>
+    </Output>
+  </OutputList>
+
+</SpiderEngine>

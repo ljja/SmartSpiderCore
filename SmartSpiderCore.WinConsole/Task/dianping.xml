@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpiderEngine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Title>抓取大众点评会员信息</Title>
+  <Description>抓取页面公开个人基本资料。</Description>
+
+  <InputList>
+    <Input xsi:type="HttpInput">
+      <Encoding>utf-8</Encoding>
+      <ContentType>text/html; charset=utf-8</ContentType>
+      <Host>www.dianping.com</Host>
+      <Method>GET</Method>
+      <Sleep>0</Sleep>
+      <CookieClean>30</CookieClean>
+      <Referer>http://www.dianping.com/member/1000006</Referer>
+      <Accept>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</Accept>
+      <UserAgent>Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36</UserAgent>
+      <Headers>
+        <NameValue>
+          <Name>Accept-Language</Name>
+          <Value>zh-CN,zh;q=0.8,en;q=0.6</Value>
+        </NameValue>
+        <NameValue>
+          <Name>Cache-Control</Name>
+          <Value>max-age=0</Value>
+        </NameValue>
+      </Headers>
+      <UrlEnumerator>
+        <UrlFormat>http://180.153.132.49/member/{MEMBER}</UrlFormat>
+        <EnumeratorRuleList>
+          <EnumeratorRule xsi:type="ForEnumeratorRule">
+            <Feature>{MEMBER}</Feature>
+            <Start>1</Start>
+            <End>10000</End>
+            <Step>1</Step>
+            <Direction>true</Direction>
+          </EnumeratorRule>
+        </EnumeratorRuleList>
+      </UrlEnumerator>
+    </Input>
+  </InputList>
+
+  <FieldList>
+
+    <Field>
+      <Title>采集时间</Title>
+      <DataName>CreateTime</DataName>
+      <Rule>
+        <Rule xsi:type="DateRule">
+          <Format>yyyy-MM-dd HH:mm:ss</Format>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>当前网页</Title>
+      <DataName>Url</DataName>
+      <Rule>
+        <Rule xsi:type="SessionRule">
+          <Key>Request.Url</Key>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>会员编号</Title>
+      <DataName>MemberId</DataName>
+      <Require>true</Require>
+      <Rule>
+        <Rule xsi:type="RegexRule">
+          <RegexValue>memberId\: [0-9]+</RegexValue>
+        </Rule>
+        <Rule xsi:type="RegexRule">
+          <RegexValue>[0-9]+</RegexValue>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>会员昵称</Title>
+      <DataName>Nick</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>class="name"&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>所在地</Title>
+      <DataName>City</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&lt;i class="woman"&gt;&lt;/i&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>标签</Title>
+      <DataName>Label</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&lt;span id="J_usertag"&gt;</Begin>
+          <End>&lt;/span&gt;</End>
+        </Rule>
+        <Rule xsi:type="ReplaceRule">
+          <Origin>&lt;em class="user-tag" id="-2"&gt;</Origin>
+          <Target></Target>
+        </Rule>
+        <Rule xsi:type="ReplaceRule">
+          <Origin>&lt;/em&gt;</Origin>
+          <Target>|</Target>
+        </Rule>
+        <Rule xsi:type="TrimRule" />
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>关注</Title>
+      <DataName>Attention</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>关注&lt;/span&gt;&lt;strong &gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>粉丝</Title>
+      <DataName>Fans</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>粉丝&lt;/span&gt;&lt;strong &gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>鲜花</Title>
+      <DataName>Flower</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>鲜花&lt;/span&gt;&lt;strong &gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>贡献值</Title>
+      <DataName>Contribution</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>贡献值：&lt;/span&gt;&lt;span id="J_col_exp"&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>社区等级</Title>
+      <DataName>CommunityLevel</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>社区等级：&lt;/span&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>注册时间</Title>
+      <DataName>RegDate</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>注册时间：&lt;/span&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>最后登录</Title>
+      <DataName>LastLogin</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>最后登录：&lt;/span&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>简介</Title>
+      <DataName>Smmary</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>简介：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>,</Begin>
+          <End>#</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>体型</Title>
+      <DataName>Profile</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>体型：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>恋爱状况</Title>
+      <DataName>Love</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>恋爱状况：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>生日</Title>
+      <DataName>Birthday</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>生日：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>星座</Title>
+      <DataName>Constellation</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>星座：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>行业职业</Title>
+      <DataName>Job</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>行业职业：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>毕业中学</Title>
+      <DataName>HighSchool</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>毕业中学：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>毕业大学</Title>
+      <DataName>University</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>毕业大学：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>个人主页</Title>
+      <DataName>Home</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>个人主页：&lt;/em&gt;&lt;a target="_blank" href="</Begin>
+          <End>"</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>爱好</Title>
+      <DataName>Hobby</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>爱好：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>菜肴</Title>
+      <DataName>Food</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>菜肴/菜系/餐厅：&lt;/em&gt;</Begin>
+          <End>&lt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>点评</Title>
+      <DataName>CommentCount</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&gt;点评(</Begin>
+          <End>)</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>收藏</Title>
+      <DataName>FavoriteCount</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&gt;收藏(</Begin>
+          <End>)</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>签到</Title>
+      <DataName>SignCount</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&gt;签到(</Begin>
+          <End>)</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>图片</Title>
+      <DataName>ImageCount</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&gt;图片(</Begin>
+          <End>)</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>榜单</Title>
+      <DataName>BangCount</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&gt;榜单(</Begin>
+          <End>)</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>帖子</Title>
+      <DataName>PostsCount</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>&gt;帖子(</Begin>
+          <End>)</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+  </FieldList>
+
+  <OutputList>
+    <Output xsi:type="CsvOutput">
+      <Path>dianping_menber.csv</Path>
+    </Output>
+  </OutputList>
+
+</SpiderEngine>

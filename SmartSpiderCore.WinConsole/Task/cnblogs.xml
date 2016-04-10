@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpiderEngine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Title>抓取博客园博文</Title>
+  <Description>抓取前20页最新博文。</Description>
+
+  <!--起始地址-->
+  <InputList>
+    <Input xsi:type="HttpInput">
+      <Encoding>utf-8</Encoding>
+      <ContentType>text/html</ContentType>
+      <Host>www.cnblogs.com</Host>
+      <Method>GET</Method>
+      <Sleep>0</Sleep>
+      <CookieClean>32767</CookieClean>
+      <Referer>http://www.cnblogs.com</Referer>
+      <Accept>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</Accept>
+      <UserAgent>Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36</UserAgent>
+      <Headers>
+        <NameValue>
+          <Name>Accept-Language</Name>
+          <Value>zh-CN,zh;q=0.8,en;q=0.6</Value>
+        </NameValue>
+        <NameValue>
+          <Name>Cache-Control</Name>
+          <Value>max-age=0</Value>
+        </NameValue>
+      </Headers>
+      <UrlEnumerator>
+        <UrlFormat>http://www.cnblogs.com/sitehome/p/{PAGENUM}</UrlFormat>
+        <EnumeratorRuleList>
+          <EnumeratorRule xsi:type="ForEnumeratorRule">
+            <Feature>{PAGENUM}</Feature>
+            <Start>1</Start>
+            <End>200</End>
+            <Step>1</Step>
+            <Direction>true</Direction>
+          </EnumeratorRule>
+        </EnumeratorRuleList>
+      </UrlEnumerator>
+    </Input>
+  </InputList>
+
+  <!--导航规则-->
+  <NavigationRule  xsi:type="RegexNavigationRule">
+    <Begin>id="post_list"&gt;</Begin>
+    <End>editorPickStat()</End>
+    <RegexValue>http://www.cnblogs.com/[0-9a-zA-Z-]+/[0-9a-zA-Z-]+/[0-9a-zA-Z-]+.html</RegexValue>
+  </NavigationRule>
+
+  <!--抓取规则-->
+  <FieldList>
+
+    <Field>
+      <Title>GUID</Title>
+      <DataName>Guid</DataName>
+      <Rule>
+        <Rule xsi:type="GuidRule" />
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>采集时间</Title>
+      <DataName>CreateTime</DataName>
+      <Rule>
+        <Rule xsi:type="DateRule">
+          <Format>yyyy-MM-dd HH:mm:ss</Format>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>当前网页</Title>
+      <DataName>Url</DataName>
+      <Rule>
+        <Rule xsi:type="SessionRule">
+          <Key>Request.Url</Key>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>内容类型</Title>
+      <DataName>ContentType</DataName>
+      <Rule>
+        <Rule xsi:type="SessionRule">
+          <Key>Request.Content-Type</Key>
+        </Rule>
+        <Rule xsi:type="Base64Rule" />
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>博文编号</Title>
+      <DataName>PostId</DataName>
+      <Require>true</Require>
+      <Rule>
+        <Rule xsi:type="RegexRule">
+          <RegexValue>AddToWz\([0-9]+\)</RegexValue>
+        </Rule>
+        <Rule xsi:type="ReplaceRule">
+          <Origin>AddToWz(</Origin>
+          <Target></Target>
+        </Rule>
+        <Rule xsi:type="ReplaceRule">
+          <Origin>)</Origin>
+          <Target></Target>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>博文标题</Title>
+      <DataName>Title</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>postTitle2</Begin>
+          <End>&lt;/h1&gt;</End>
+        </Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>"&gt;</Begin>
+          <End>&lt;/a&gt;</End>
+        </Rule>
+      </Rule>
+    </Field>
+
+    <Field>
+      <Title>博文内容</Title>
+      <DataName>Content</DataName>
+      <Rule>
+        <Rule xsi:type="SubStringRule">
+          <Begin>cnblogs_post_body"&gt;</Begin>
+          <End>&lt;/div&gt;&lt;div id="MySignature"</End>
+        </Rule>
+        <Rule xsi:type="Base64Rule" />
+      </Rule>
+    </Field>
+
+  </FieldList>
+
+  <!--发布规则-->
+  <OutputList>
+    <Output xsi:type="CsvOutput">
+      <Path>cnblogs_post.csv</Path>
+    </Output>
+  </OutputList>
+
+</SpiderEngine>

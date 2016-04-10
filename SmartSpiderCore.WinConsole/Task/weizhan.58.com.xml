@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SpiderEngine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <Title>抓取58微站商家网站信息</Title>
+  <Description></Description>
+
+  <InputList>
+    <Input xsi:type="HttpInput">
+      <Encoding>utf-8</Encoding>
+      <ContentType>text/html; charset=utf-8</ContentType>
+      <Host>weizhan.58.com</Host>
+      <Method>GET</Method>
+      <Sleep>0</Sleep>
+      <CookieClean>30</CookieClean>
+      <Referer>http://weizhan.58.com/case/anli/all.html</Referer>
+      <Accept>text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</Accept>
+      <UserAgent>Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36</UserAgent>
+      <Headers>
+        <NameValue>
+          <Name>Accept-Language</Name>
+          <Value>zh-CN,zh;q=0.8,en;q=0.6</Value>
+        </NameValue>
+        <NameValue>
+          <Name>Cache-Control</Name>
+          <Value>max-age=0</Value>
+        </NameValue>
+      </Headers>
+      <UrlEnumerator>
+        <UrlFormat>http://weizhan.58.com/case/city/all/zhuangxiujc/{MEMBER}</UrlFormat>
+        <EnumeratorRuleList>
+          <EnumeratorRule xsi:type="ForEnumeratorRule">
+            <Feature>{MEMBER}</Feature>
+            <Start>1</Start>
+            <End>222</End>
+            <Step>1</Step>
+            <Direction>true</Direction>
+          </EnumeratorRule>
+        </EnumeratorRuleList>
+      </UrlEnumerator>
+    </Input>
+  </InputList>
+
+  <FieldList>
+    
+    <Field>
+      <Title>会员编号</Title>
+      <DataName>MemberId</DataName>
+      <Require>true</Require>
+      <Rule>
+        <Rule xsi:type="RegexToList">
+          <FileName>weizhan_58_com.txt</FileName>
+          <RegexValue>http://[0-9a-zA-Z-]+.5858.com/</RegexValue>
+        </Rule>
+      </Rule>
+    </Field>
+    
+  </FieldList>
+
+  <OutputList>
+    <Output xsi:type="CsvOutput">
+      <Path>weizhan_58_com.csv</Path>
+    </Output>
+  </OutputList>
+
+</SpiderEngine>
