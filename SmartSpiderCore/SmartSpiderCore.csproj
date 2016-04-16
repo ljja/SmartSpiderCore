@@ -57,6 +57,7 @@
     <Compile Include="ExtractRule\FixedValueRule.cs" />
     <Compile Include="ExtractRule\GuidRule.cs" />
     <Compile Include="ExtractRule\InnerTextRule.cs" />
+	<Compile Include="ExtractRule\Md5Rule.cs" />
     <Compile Include="ExtractRule\RegexToList.cs" />
     <Compile Include="ExtractRule\SplitRule.cs" />
     <Compile Include="In\ActiveMQEnumerator.cs" />

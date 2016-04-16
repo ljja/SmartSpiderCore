@@ -18,7 +18,7 @@ namespace SmartSpiderCore
     XmlInclude(typeof(SubStringRule)), XmlInclude(typeof(TrimRule)), XmlInclude(typeof(XPathRule)),
     XmlInclude(typeof(SubStringIndexRule)), XmlInclude(typeof(SessionRule)), XmlInclude(typeof(Base64Rule)),
     XmlInclude(typeof(GuidRule)), XmlInclude(typeof(SplitRule)), XmlInclude(typeof(RegexToList)),
-    XmlInclude(typeof(FixedValueRule)), XmlInclude(typeof(InnerTextRule)),
+    XmlInclude(typeof(FixedValueRule)), XmlInclude(typeof(InnerTextRule)),XmlInclude(typeof(Md5Rule)),
 
     XmlInclude(typeof(ComplexField)),
     XmlInclude(typeof(RegexNavigationRule)),

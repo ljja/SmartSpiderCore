@@ -6,6 +6,10 @@ namespace SmartSpiderCore
 {
     public class RegexNavigationRule : NavigationRule
     {
+		public string Prefix { get; set; }
+
+        public string Suffix { get; set; }
+		
         public string Begin { get; set; }
 
         public string End { get; set; }
@@ -39,6 +43,22 @@ namespace SmartSpiderCore
                 if (tmp.Contains(m) == false)
                 {
                     tmp.Add(m);
+                }
+            }
+			
+			if (String.IsNullOrEmpty(Prefix) == false)
+            {
+                for (var i = 0; i < tmp.Count; i++)
+                {
+                    tmp[i] = Prefix + tmp[i];
+                }
+            }
+
+            if (String.IsNullOrEmpty(Suffix) == false)
+            {
+                for (var i = 0; i < tmp.Count; i++)
+                {
+                    tmp[i] = tmp[i] + Suffix;
                 }
             }
 
